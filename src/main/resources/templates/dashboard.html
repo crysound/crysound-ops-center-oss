@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/shell :: head('Tasks')}"></head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header th:replace="~{fragments/shell :: header}"></header>
+<main id="main" tabindex="-1">
+    <h1>Task workspace</h1>
+    <p class="intro">Collect example records, inspect their stored snapshot and check the in-memory delivery.</p>
+    <section id="tasks" aria-labelledby="task-heading">
+        <h2 id="task-heading">Tasks</h2>
+        <div class="task-row" th:each="task : ${tasks}">
+            <div><h3 th:text="${task.id()}">demo</h3><p>In-memory source → local storage → in-memory destination</p></div>
+            <form th:if="${canExecute}" th:action="@{/tasks/{id}/run(id=${task.id()})}" method="post">
+                <div class="field"><label th:for="${task.id() + '-size'}">Record count</label>
+                    <input th:id="${task.id() + '-size'}" name="size" type="number" min="1" max="10" value="3" required></div>
+                <button type="submit">Run demo</button>
+            </form>
+            <p th:unless="${canExecute}">Read access. An operator can start executions.</p>
+        </div>
+    </section>
+    <section id="history" aria-labelledby="history-heading">
+        <h2 id="history-heading">Recent executions</h2>
+        <p th:if="${runs.isEmpty()}">No executions yet. Run the demo to see its progress and records here.</p>
+        <div class="table-scroll" th:unless="${runs.isEmpty()}">
+            <table><caption class="sr-only">Latest execution records, timestamps in UTC</caption>
+                <thead><tr><th scope="col">Execution</th><th scope="col">Trigger</th><th scope="col">Status</th><th scope="col">Phase</th><th scope="col">Records</th><th scope="col">Started (UTC)</th></tr></thead>
+                <tbody><tr th:each="run : ${runs}">
+                    <td><a class="identifier" th:href="@{/(run=${run.runId()})}" th:text="${run.runId()}"></a></td>
+                    <td th:text="${run.triggerType()}"></td><td th:text="${run.status()}"></td><td th:text="${run.phase()}"></td>
+                    <td th:text="${run.recordCount()}"></td><td th:text="${run.startedAt()}"></td>
+                </tr></tbody>
+            </table>
+        </div>
+    </section>
+    <section id="records" aria-labelledby="records-heading">
+        <h2 id="records-heading">Stored records</h2>
+        <p th:if="${selected != null}" class="identifier" th:text="${selected.runId()}"></p>
+        <p th:if="${records.isEmpty()}">No stored records for the selected execution.</p>
+        <dl th:unless="${records.isEmpty()}" class="record-list">
+            <div th:each="record : ${records}"><dt th:text="${record.key()}"></dt><dd th:text="${record.value()}"></dd></div>
+        </dl>
+    </section>
+    <section aria-labelledby="delivery-heading">
+        <h2 id="delivery-heading">Demo deliveries</h2>
+        <p th:if="${deliveries.isEmpty()}">The destination has no deliveries yet.</p>
+        <ul class="delivery-list" th:unless="${deliveries.isEmpty()}"><li th:each="delivery : ${deliveries}">
+            <span class="identifier" th:text="${delivery.runId()}"></span>
+            <span th:text="${delivery.records().size()} + ' example records received'"></span>
+        </li></ul>
+    </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title} + ' · Operations Center'">Operations Center</title>
+    <link rel="stylesheet" th:href="@{/css/tokens.css}">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<header th:fragment="header" class="topbar">
+    <a class="brand" th:href="@{/}">Operations Center</a>
+    <nav aria-label="Workspace">
+        <a href="#tasks">Tasks</a>
+        <a href="#history">Executions</a>
+        <a href="#records">Stored records</a>
+    </nav>
+    <form th:action="@{/logout}" method="post"><button class="secondary" type="submit">Sign out</button></form>
+</header>
+</body>
+</html>

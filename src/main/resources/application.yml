@@ -1,0 +1,35 @@
+server:
+  address: ${OPS_BIND_ADDRESS}
+  port: ${OPS_HTTP_PORT}
+  error:
+    include-message: never
+    include-stacktrace: never
+  servlet:
+    session:
+      timeout: 30m
+      cookie:
+        http-only: true
+        same-site: strict
+spring:
+  datasource:
+    url: ${OPS_DATABASE_URL}
+    driver-class-name: org.sqlite.JDBC
+    hikari:
+      maximum-pool-size: 1
+      minimum-idle: 1
+      # Keep the single in-memory SQLite connection until shutdown or connection failure.
+      max-lifetime: 0
+      idle-timeout: 0
+  sql:
+    init:
+      mode: always
+  thymeleaf:
+    cache: true
+ops:
+  security:
+    operator-username: ${OPS_OPERATOR_USERNAME}
+    operator-password: ${OPS_OPERATOR_PASSWORD}
+    viewer-username: ${OPS_VIEWER_USERNAME}
+    viewer-password: ${OPS_VIEWER_PASSWORD}
+  demo:
+    cron: ${OPS_DEMO_CRON}

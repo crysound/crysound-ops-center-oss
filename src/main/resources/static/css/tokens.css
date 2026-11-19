@@ -1,0 +1,19 @@
+:root {
+    color-scheme: light;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --text: #20242c;
+    --muted: #535d6d;
+    --surface: #fff;
+    --subtle: #f5f6f8;
+    --border: #cbd0d9;
+    --accent: #170057;
+    --accent-hover: #30216a;
+    --focus: #4c3295;
+    --radius: 4px;
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-6: 24px;
+    --space-8: 32px;
+}
